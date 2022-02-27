@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/SIF
+    password: '250199'
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: update
+sif:
+  config:
+    mensagens:
+      qtdmaiorquepermitida: 'Essa quantidade não pode ser adicionada, a quantidade
+        maxima de selos para essa cartela é de #selos!'
+      cartelacheia: 'Essa cartela já está cheia!'
+    cartela:
+      serie: '00010000'
+jwt:
+  time: '86400000'
+  salt: '?RZGCiL#TS1)eEBprek4zcwiY1)44PXenqne.ujVDjK*Fi/6BcZ@s-+nsZhz'

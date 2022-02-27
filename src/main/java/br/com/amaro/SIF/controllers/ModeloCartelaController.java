@@ -2,6 +2,7 @@ package br.com.amaro.SIF.controllers;
 
 import br.com.amaro.SIF.dto.ModeloCartelaDTO;
 import br.com.amaro.SIF.form.ModeloCartelaForm;
+import br.com.amaro.SIF.form.ModeloCartelaUpdateForm;
 import br.com.amaro.SIF.repository.ModeloCartelaRepository;
 import br.com.amaro.SIF.services.ModeloCartelaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,13 @@ public class ModeloCartelaController {
             @RequestHeader("Authorization") String authorization, @RequestBody ModeloCartelaForm form) {
         ModeloCartelaDTO modeloCartelaDTO = modeloCartelaService.novaCartela(authorization, form);
         return ResponseEntity.ok(modeloCartelaDTO);
+    }
+
+    @PutMapping("/{id}")
+    private ResponseEntity<ModeloCartelaDTO> atualizaModelo(
+            @PathVariable Long id, @RequestBody ModeloCartelaUpdateForm form) {
+        ModeloCartelaDTO modelo = modeloCartelaService.atualizaModelo(id, form);
+        return ResponseEntity.ok(modelo);
     }
 
 

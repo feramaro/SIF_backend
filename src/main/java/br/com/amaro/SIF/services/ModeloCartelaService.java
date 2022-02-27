@@ -2,6 +2,7 @@ package br.com.amaro.SIF.services;
 
 import br.com.amaro.SIF.dto.ModeloCartelaDTO;
 import br.com.amaro.SIF.form.ModeloCartelaForm;
+import br.com.amaro.SIF.form.ModeloCartelaUpdateForm;
 import br.com.amaro.SIF.models.ModeloCartela;
 import br.com.amaro.SIF.models.Usuario;
 import br.com.amaro.SIF.repository.ModeloCartelaRepository;
@@ -30,6 +31,13 @@ public class ModeloCartelaService {
         modeloCartela.setDataExpiracao(geraDataExpiracao(form.getDiasExpiracao()));
         modeloCartela.setCriador(usuario);
         modeloCartelaRepository.save(modeloCartela);
+        return new ModeloCartelaDTO(modeloCartela);
+    }
+
+    public ModeloCartelaDTO atualizaModelo(Long id, ModeloCartelaUpdateForm form) {
+        ModeloCartela modeloCartela = modeloCartelaRepository.getById(id);
+        modeloCartela.setAtiva(form.isAtiva());
+        modeloCartela = modeloCartelaRepository.save(modeloCartela);
         return new ModeloCartelaDTO(modeloCartela);
     }
 

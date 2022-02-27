@@ -25,4 +25,5 @@ public class ModeloCartela {
     @ManyToOne
     @JoinColumn(name = "criador_id", referencedColumnName = "id")
     private Usuario criador;
+    private boolean ativa = true;
 }

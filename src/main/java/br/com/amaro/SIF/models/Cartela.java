@@ -20,7 +20,7 @@ public class Cartela {
     @JoinColumn(name = "modelo_id", referencedColumnName = "id")
     private ModeloCartela modeloCartela;
     @Column(nullable = false)
-    private Integer selos;
+    private Integer selos = 0;
     @ManyToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     private Usuario owner;
@@ -28,6 +28,6 @@ public class Cartela {
     @Column(nullable = false)
     private Date dataExpiracao;
     @Column(nullable = false)
-    private boolean completa;
+    private boolean completa = false;
 
 }
