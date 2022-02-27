@@ -40,6 +40,10 @@ public class TokenService {
         }
     }
 
+    public Long convertTokenAndGetId(String authorization) {
+        return getIdUsuario(authorization.substring(7));
+    }
+
     public Long getIdUsuario(String token) {
         Claims claims =  Jwts.parser().setSigningKey(salt).parseClaimsJws(token).getBody();
         return Long.parseLong(claims.getSubject());

@@ -39,7 +39,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         if(token == null || !token.startsWith("Bearer ")) {
             return null;
         }
-        return token.substring(7, token.length());
+        return token.substring(7);
     }
 
     private void autenticarCliente(String token) {

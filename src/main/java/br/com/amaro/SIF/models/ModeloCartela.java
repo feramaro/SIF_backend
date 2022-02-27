@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter @Setter @NoArgsConstructor
@@ -19,6 +20,8 @@ public class ModeloCartela {
     private Integer quantidadeSelos;
     @Column(nullable = false)
     private String brinde;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataExpiracao;
     @ManyToOne
     @JoinColumn(name = "criador_id", referencedColumnName = "id")
     private Usuario criador;
