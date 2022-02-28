@@ -12,6 +12,7 @@ public class UsuarioRegisterForm {
     private String senha;
     private String telefone;
     private String username;
+    private String tipo;
 
     public Usuario toUsuario() {
         Usuario usuario = new Usuario();
@@ -19,7 +20,7 @@ public class UsuarioRegisterForm {
         usuario.setEmail(this.email);
         usuario.setTelefone(this.telefone);
         usuario.setUserName(this.username);
-        usuario.setTipo(TipoUsuario.CLIENTE);
+        usuario.setTipo(TipoUsuario.valueOf(this.tipo));
         return usuario;
     }
 }

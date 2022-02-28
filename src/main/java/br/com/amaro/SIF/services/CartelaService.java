@@ -1,6 +1,7 @@
 package br.com.amaro.SIF.services;
 
-import br.com.amaro.SIF.config.excpetions.CartelaException;
+import br.com.amaro.SIF.config.exceptions.CartelaException;
+import br.com.amaro.SIF.dto.NovaCartelaDTO;
 import br.com.amaro.SIF.dto.NovoSeloDTO;
 import br.com.amaro.SIF.form.NovaCartelaForm;
 import br.com.amaro.SIF.form.NovoSeloForm;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -33,15 +35,20 @@ public class CartelaService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public void novaCartela(NovaCartelaForm form) {
-        ModeloCartela modeloCartela = modeloCartelaRepository.getById(form.getIdModelo());
+    public NovaCartelaDTO novaCartela(NovaCartelaForm form) {
+        Optional<ModeloCartela> modeloCartelaOpt = modeloCartelaRepository.findById(form.getIdModelo());
+        if(!modeloCartelaOpt.isPresent()) {
+            throw new CartelaException("Modelo de cartela não existe!");
+        }
+        ModeloCartela modeloCartela = modeloCartelaOpt.get();
         Usuario usuario = usuarioRepository.findUsuarioByUserName(form.getUsername()).get();
         Cartela cartela = new Cartela();
         cartela.setModeloCartela(modeloCartela);
         cartela.setOwner(usuario);
         cartela.setDataExpiracao(modeloCartela.getDataExpiracao());
         cartela.setSerie(gerarSerie());
-        cartelaRepository.save(cartela);
+        cartela = cartelaRepository.save(cartela);
+        return new NovaCartelaDTO(cartela);
     }
 
     public NovoSeloDTO novoSelo(NovoSeloForm form) {
