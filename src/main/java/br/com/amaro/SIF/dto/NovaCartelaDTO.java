@@ -1,11 +1,10 @@
 package br.com.amaro.SIF.dto;
 
-import br.com.amaro.SIF.models.Cartela;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import br.com.amaro.SIF.repository.models.Cartela;
+import lombok.Data;
 
-@Getter
-@AllArgsConstructor
+
+@Data
 public class NovaCartelaDTO {
     private String serie;
     private String username;

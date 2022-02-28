@@ -1,4 +1,4 @@
-package br.com.amaro.SIF.models;
+package br.com.amaro.SIF.repository.models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,4 +26,6 @@ public class ModeloCartela {
     @JoinColumn(name = "criador_id", referencedColumnName = "id")
     private Usuario criador;
     private boolean ativa = true;
+    @Column(nullable = false)
+    private String codigoConvite;
 }

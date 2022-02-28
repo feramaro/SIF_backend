@@ -1,10 +1,13 @@
 package br.com.amaro.SIF.form;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter @AllArgsConstructor
+import javax.validation.constraints.*;
+
+@Data
 public class NovoSeloForm {
+    @NotNull @NotEmpty
     private String serie;
+    @NotNull @Min(1) @Max(50)
     private Integer qtdSelos;
 }

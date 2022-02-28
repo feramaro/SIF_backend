@@ -1,7 +1,7 @@
-package br.com.amaro.SIF.config.validation;
+package br.com.amaro.SIF.config.exceptions.validation;
 
 import br.com.amaro.SIF.config.exceptions.CartelaException;
-import br.com.amaro.SIF.config.validation.dto.ErroDTO;
+import br.com.amaro.SIF.config.exceptions.validation.dto.ErroDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

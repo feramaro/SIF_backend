@@ -1,6 +1,6 @@
 package br.com.amaro.SIF.services;
 
-import br.com.amaro.SIF.models.Usuario;
+import br.com.amaro.SIF.repository.models.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -23,7 +23,7 @@ public class TokenService {
         Date inicio = new Date();
         Date fim = new Date(inicio.getTime() + Long.parseLong(expiracao));
         return Jwts.builder()
-                .setIssuer("API do Forum Alura")
+                .setIssuer("SIP_API")
                 .setSubject(logado.getId().toString())
                 .setIssuedAt(inicio)
                 .setExpiration(fim)

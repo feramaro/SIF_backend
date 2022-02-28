@@ -1,7 +1,8 @@
-package br.com.amaro.SIF.config.validation.dto;
+package br.com.amaro.SIF.config.exceptions.validation.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 

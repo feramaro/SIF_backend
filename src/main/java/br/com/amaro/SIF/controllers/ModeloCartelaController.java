@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/sif_modelo")
 public class ModeloCartelaController {
@@ -18,14 +20,14 @@ public class ModeloCartelaController {
 
     @PostMapping
     private ResponseEntity<ModeloCartelaDTO> novoModelo(
-            @RequestHeader("Authorization") String authorization, @RequestBody ModeloCartelaForm form) {
+            @RequestHeader("Authorization") String authorization, @Valid @RequestBody ModeloCartelaForm form) {
         ModeloCartelaDTO modeloCartelaDTO = modeloCartelaService.novaCartela(authorization, form);
         return ResponseEntity.ok(modeloCartelaDTO);
     }
 
     @PutMapping("/{id}")
     private ResponseEntity<ModeloCartelaDTO> atualizaModelo(
-            @PathVariable Long id, @RequestBody ModeloCartelaUpdateForm form) {
+            @PathVariable Long id, @Valid @RequestBody ModeloCartelaUpdateForm form) {
         ModeloCartelaDTO modelo = modeloCartelaService.atualizaModelo(id, form);
         return ResponseEntity.ok(modelo);
     }

@@ -1,4 +1,4 @@
-package br.com.amaro.SIF.models;
+package br.com.amaro.SIF.repository.models;
 
 import org.springframework.security.core.GrantedAuthority;
 

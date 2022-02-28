@@ -1,6 +1,6 @@
-package br.com.amaro.SIF.models;
+package br.com.amaro.SIF.repository.models;
 
-import br.com.amaro.SIF.models.enums.TipoUsuario;
+import br.com.amaro.SIF.repository.models.enums.TipoUsuario;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

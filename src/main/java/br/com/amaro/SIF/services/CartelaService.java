@@ -1,23 +1,26 @@
 package br.com.amaro.SIF.services;
 
 import br.com.amaro.SIF.config.exceptions.CartelaException;
+import br.com.amaro.SIF.config.exceptions.InvalidInfoException;
+import br.com.amaro.SIF.dto.CartelaDTO;
 import br.com.amaro.SIF.dto.NovaCartelaDTO;
 import br.com.amaro.SIF.dto.NovoSeloDTO;
+import br.com.amaro.SIF.dto.OwnerCartelasDTO;
+import br.com.amaro.SIF.form.ConviteForm;
 import br.com.amaro.SIF.form.NovaCartelaForm;
 import br.com.amaro.SIF.form.NovoSeloForm;
-import br.com.amaro.SIF.models.Cartela;
-import br.com.amaro.SIF.models.ModeloCartela;
-import br.com.amaro.SIF.models.Usuario;
+import br.com.amaro.SIF.repository.models.Cartela;
+import br.com.amaro.SIF.repository.models.ModeloCartela;
+import br.com.amaro.SIF.repository.models.Usuario;
 import br.com.amaro.SIF.repository.CartelaRepository;
 import br.com.amaro.SIF.repository.ModeloCartelaRepository;
 import br.com.amaro.SIF.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class CartelaService {
@@ -28,31 +31,51 @@ public class CartelaService {
     private String carteiraCheiaMessage;
     @Value("${sif.config.mensagens.qtdmaiorquepermitida}")
     private String qtdMaiorQuePermitida;
+    @Value("${sif.config.mensagens.cartelaRepetida}")
+    private String cartelaRepetida;
+    @Value("${sif.config.mensagens.cartelaRepetidaConvite}")
+    private String cartelaRepetidaConvite;
     @Autowired
     private CartelaRepository cartelaRepository;
     @Autowired
     private ModeloCartelaRepository modeloCartelaRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private TokenService tokenService;
 
+    @Transactional
     public NovaCartelaDTO novaCartela(NovaCartelaForm form) {
         Optional<ModeloCartela> modeloCartelaOpt = modeloCartelaRepository.findById(form.getIdModelo());
-        if(!modeloCartelaOpt.isPresent()) {
+        if(modeloCartelaOpt.isEmpty()) {
             throw new CartelaException("Modelo de cartela não existe!");
         }
         ModeloCartela modeloCartela = modeloCartelaOpt.get();
         Usuario usuario = usuarioRepository.findUsuarioByUserName(form.getUsername()).get();
-        Cartela cartela = new Cartela();
-        cartela.setModeloCartela(modeloCartela);
-        cartela.setOwner(usuario);
-        cartela.setDataExpiracao(modeloCartela.getDataExpiracao());
-        cartela.setSerie(gerarSerie());
-        cartela = cartelaRepository.save(cartela);
-        return new NovaCartelaDTO(cartela);
+        if(verificaSeJaTemCartela(usuario, modeloCartela)) {
+            throw new CartelaException(cartelaRepetida);
+        }
+        return getNovaCartelaDTO(usuario, modeloCartela);
     }
 
-    public NovoSeloDTO novoSelo(NovoSeloForm form) {
+    @Transactional
+    public NovaCartelaDTO adicionaPorConvite(String authorization, ConviteForm form) {
+        Long idUsuarioByToken = tokenService.convertTokenAndGetId(authorization);
+        Usuario owner = usuarioRepository.getById(idUsuarioByToken);
+
+        ModeloCartela modeloCartela = modeloCartelaRepository.getByCodigoConvite(form.getConvite());
+        if(verificaSeJaTemCartela(owner, modeloCartela)) {
+            throw new CartelaException(cartelaRepetidaConvite);
+        }
+        return getNovaCartelaDTO(owner, modeloCartela);
+    }
+
+    public NovoSeloDTO novoSelo(String authorization, NovoSeloForm form) {
         Cartela cartela = cartelaRepository.findCartelaBySerie(form.getSerie());
+        Long idCriadorByToken = tokenService.convertTokenAndGetId(authorization);
+        if(idCriadorByToken != cartela.getModeloCartela().getCriador().getId()) {
+            throw new InvalidInfoException("Você não pode adicionar selos em uma cartela de outro criador.");
+        }
         if(cartela.isCompleta()) {
             throw new CartelaException(carteiraCheiaMessage);
         }
@@ -65,6 +88,31 @@ public class CartelaService {
         }
         cartela = cartelaRepository.save(cartela);
         return new NovoSeloDTO(cartela);
+    }
+
+    public OwnerCartelasDTO buscaCartelasUsuario(String authorization) {
+        Long userIdByToken = tokenService.convertTokenAndGetId(authorization);
+        Usuario owner = usuarioRepository.getById(userIdByToken);
+        List<Cartela> cartelas = cartelaRepository.findCartelasByOwner(owner);
+        List<CartelaDTO> cartelasDTO = new ArrayList<>();
+        cartelas.forEach(cartela -> {
+            cartelasDTO.add(new CartelaDTO(cartela));
+        });
+        return new OwnerCartelasDTO(owner.getUsername(), cartelasDTO);
+    }
+
+    private NovaCartelaDTO getNovaCartelaDTO(Usuario owner, ModeloCartela modeloCartela) {
+        Cartela cartela = new Cartela();
+        cartela.setModeloCartela(modeloCartela);
+        cartela.setOwner(owner);
+        cartela.setDataExpiracao(modeloCartela.getDataExpiracao());
+        cartela.setSerie(gerarSerie());
+        cartela = cartelaRepository.save(cartela);
+        return new NovaCartelaDTO(cartela);
+    }
+
+    private Boolean verificaSeJaTemCartela(Usuario usuario, ModeloCartela modeloCartela) {
+        return cartelaRepository.existsCartelaByOwnerAndModeloCartelaAndCompletaFalse(usuario,modeloCartela);
     }
 
     private String gerarSerie() {

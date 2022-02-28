@@ -1,9 +1,9 @@
 package br.com.amaro.SIF.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter @AllArgsConstructor
+@Data @AllArgsConstructor
 public class TokenDTO {
     private String token;
     private String tipo;

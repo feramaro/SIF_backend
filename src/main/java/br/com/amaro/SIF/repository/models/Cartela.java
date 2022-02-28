@@ -1,4 +1,4 @@
-package br.com.amaro.SIF.models;
+package br.com.amaro.SIF.repository.models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

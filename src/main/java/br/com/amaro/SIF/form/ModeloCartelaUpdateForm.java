@@ -1,10 +1,12 @@
 package br.com.amaro.SIF.form;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter @AllArgsConstructor
+import javax.validation.constraints.NotNull;
+
+@Data
 public class ModeloCartelaUpdateForm {
+    @NotNull
     private boolean ativa;
 
 }

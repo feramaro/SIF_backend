@@ -1,6 +1,6 @@
 package br.com.amaro.SIF.config.security;
 
-import br.com.amaro.SIF.models.Usuario;
+import br.com.amaro.SIF.repository.models.Usuario;
 import br.com.amaro.SIF.repository.UsuarioRepository;
 import br.com.amaro.SIF.services.TokenService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

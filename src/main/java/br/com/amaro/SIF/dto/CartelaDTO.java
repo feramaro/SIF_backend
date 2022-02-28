@@ -1,19 +1,20 @@
 package br.com.amaro.SIF.dto;
 
+
 import br.com.amaro.SIF.repository.models.Cartela;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
-public class NovoSeloDTO {
+public class CartelaDTO {
     private String serie;
-    private String username;
-    private Integer qtdSelos;
+    private Integer selos;
     private boolean completa;
 
-    public NovoSeloDTO (Cartela cartela) {
+    public CartelaDTO(Cartela cartela) {
         this.serie = cartela.getSerie();
-        this.username = cartela.getOwner().getUsername();
-        this.qtdSelos = cartela.getSelos();
+        this.selos = cartela.getSelos();
         this.completa = cartela.isCompleta();
     }
 }

@@ -1,6 +1,6 @@
 package br.com.amaro.SIF.services;
 
-import br.com.amaro.SIF.models.Usuario;
+import br.com.amaro.SIF.repository.models.Usuario;
 import br.com.amaro.SIF.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
