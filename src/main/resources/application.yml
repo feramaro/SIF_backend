@@ -1,16 +1,16 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    url: jdbc:postgresql://localhost:5432/SIF
-    password: '250199'
+    username: 'root'
+    url: 'jdbc:postgresql://localhost:5432/SIF'
+    password: 'root'
   jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: 'true'
     hibernate:
-      ddl-auto: update
+      ddl-auto: 'update'
 sif:
   config:
     mensagens:
@@ -28,4 +28,4 @@ sif:
         letrasAGerar: '2'
 jwt:
   time: '86400000'
-  salt: '?RZGCiL#TS1)eEBprek4zcwiY1)44PXenqne.ujVDjK*Fi/6BcZ@s-+nsZhz'
+  salt: '1PMAUWooYBVioqLpmLhyu#1*3x(WYd8YwKE:Fwo0!71xVU@i.9Wf.XOSX6vtLl/ZSATjOy'
